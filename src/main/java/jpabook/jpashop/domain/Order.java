@@ -17,14 +17,14 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne // Order 와 Member 는 다대일 // 여러 주문에 대해 한 멤버
+    @ManyToOne(fetch = FetchType.LAZY) // Order 와 Member 는 다대일 // 여러 주문에 대해 한 멤버
     @JoinColumn(name = "member_id") // 매핑 Column. member_id 가 FK 이다. // Many 쪽이 FK 가진다.
     private Member member;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
@@ -33,5 +33,19 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status; // 주문 상태 [Order, Cancle]
 
+    // == 연관관계 메서드 == //
+    public void setMember(Member member){
+        this.member = member;
+        member.getOrders().add(this);
+    }
 
+    public void addOrderItem(OrderItem orderItem){
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery){
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
 }
