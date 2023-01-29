@@ -7,7 +7,7 @@ import lombok.Setter;
 public class BookForm {
 
     private Long id;
-
+             
     // item 공통 속성
     private String name;
     private int price;
