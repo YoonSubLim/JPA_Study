@@ -22,12 +22,12 @@ public class ItemService {
     }
 
     @Transactional
-    public void updateItem(Long itemId, Book param){
+    public void updateItem(Long itemId, String name, int price, int stockQuantity){
         // 이 Item 은 JPA 가 관리하는 영속 상태이다. 값을 세팅하면 -> transaction commit(by @Transactional) 시, JPA는 flush 를 해준다. -> flush 시에는 바뀐 부분들을 모두 update 해준다.
         Item findItem = itemRepository.findOne(itemId);
-        findItem.setPrice(param.getPrice());
-        findItem.setName(param.getName());
-        findItem.setStockQuantity(param.getStockQuantity());
+        findItem.setName(name);
+        findItem.setPrice(price);
+        findItem.setStockQuantity(stockQuantity);
     }
 
     public List<Item> findItems(){
